@@ -22,7 +22,17 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                 <state key="normal" title="👻"/>
                                 <connections>
-                                    <action selector="cardButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="srF-FS-TVv"/>
+                                    <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nel-mC-fFs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDa-k9-Awy">
+                                <rect key="frame" x="144" y="147" width="79" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <state key="normal" title="🎃"/>
+                                <connections>
+                                    <action selector="touchSecondCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LcG-Fc-5ak"/>
                                 </connections>
                             </button>
                         </subviews>
