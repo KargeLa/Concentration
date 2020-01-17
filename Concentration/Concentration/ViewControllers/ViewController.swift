@@ -11,15 +11,44 @@ import Foundation
 
 class ViewController: UIViewController {
     
+    //MARK: - Properties
+    var flipCount = 0 {
+        didSet {
+            flipCountLable.text = "Flips: \(flipCount)"
+        }
+    }
+    var emojiChoices = ["🎃", "👻", "🎃", "👻"]
+    lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1)/2)
+    
+    //MARK: - Outlets
+    @IBOutlet weak var flipCountLable: UILabel!
+    @IBOutlet var cardButtons: [UIButton]!
+    
     //MARK: - Actions
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCard(withEmoji: "👻", on: sender)
+        flipCount += 1
+        if let cardNumber = cardButtons.index(of: sender) {
+            game.chooseCard(at: cardNumber)
+            updateViewFromModel​()
+        }
     }
     @IBAction func touchSecondCard(_ sender: UIButton) {
+        flipCount += 1
         flipCard(withEmoji: "🎃", on: sender)
     }
     
     //MARK: - LifeCircle
+    func updateViewFromModel​ () {
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            let card = game.cards[index]
+            if card.isFaceUp {
+                button.setTitle(emoji, for: .normal)
+                button.backgroundColor = .
+            }
+        }
+    }
+    
     func flipCard(withEmoji emoji: String, on button: UIButton) {
         print("flip card (withEmoji \(emoji))")
         if button.currentTitle == emoji {
