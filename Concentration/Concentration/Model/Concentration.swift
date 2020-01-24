@@ -8,10 +8,29 @@
 
 import Foundation
 
-class Concentration {
+struct Concentration {
     //MARK: - Properties
     var cards = [Card]()
-    var indexOfOneAndOnlyFaceUpCard: Int?
+    private var indexOfOneAndOnlyFaceUpCard: Int? {
+        get {
+            var foundIndex​: Int?
+            for index in cards.indices {
+                if cards[index].isFaceUp {
+                    if foundIndex​ == nil {
+                        foundIndex​ = index
+                    } else {
+                        return nil
+                    }
+                }
+            }
+            return foundIndex​
+        }
+        set (newValue) {
+            for index in cards.indices {
+                cards[index].isFaceUp = (index == newValue)
+            }
+        }
+    }
     
     init(numberOfPairsOfCards: Int) {
         for _ in 1...numberOfPairsOfCards {
@@ -22,7 +41,7 @@ class Concentration {
     }
     
     //MARK: - LifeCyrcle
-    func resetGame() {
+    mutating func resetGame() {
         for index in cards.indices {
             cards[index].isFaceUp = false
             cards[index].isMatched = false
@@ -30,7 +49,7 @@ class Concentration {
         cards.shaffle()
     }
     
-    func chooseCard(at index: Int) {
+   mutating func chooseCard(at index: Int) {
         if !cards[index].isMatched {
             if let mathIndex = indexOfOneAndOnlyFaceUpCard, mathIndex != index {
                 if cards[mathIndex].identifier == cards[index].identifier {
@@ -38,17 +57,16 @@ class Concentration {
                     cards[index].isMatched = true
                 }
                 cards[index].isFaceUp = true
-                indexOfOneAndOnlyFaceUpCard = nil
+                //indexOfOneAndOnlyFaceUpCard = nil
             } else {
-                for flipDownIndex in cards.indices {
-                    cards[flipDownIndex].isFaceUp = false
-                }
-                cards[index].isFaceUp = true
+                //for flipDownIndex in cards.indices {
+                //   cards[flipDownIndex].isFaceUp = false
+                //}
+                //cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = index
             }
         }
     }
-    
 }
 
 extension Array {
@@ -62,14 +80,4 @@ extension Array {
     }
 }
 
-extension Int {
-    var arc4random: Int {
-        if self > 0 {
-            return Int(arc4random_uniform(UInt32(self)))
-        } else if self < 0 {
-            return -Int(arc4random_uniform(UInt32(abs(self))))
-        } else {
-            return 0
-        }
-    }
-}
+
