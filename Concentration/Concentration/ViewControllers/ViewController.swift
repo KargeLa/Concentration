@@ -11,21 +11,12 @@ import Foundation
 
 class ViewController: UIViewController {
     
-    //MARK: - Properties
-    private (set) var flipCount = 0 {
+    //MARK: - Outlets
+    @IBOutlet private weak var flipCountLable: UILabel! {
         didSet {
-            flipCountLable.text = "Flips: \(flipCount)"
+            updateFlipCountLabel()
         }
     }
-    private var emojiChoices = ["🎃", "🚂", "🚙", "✈️", "❤️", "💕", "😍", "😘", "💀", "🤖", "👾", "🦾", "🧠", "👁", "👀", "👤"]
-    private var emoji = [Int: String]()
-    var numberOfPairsOfCards: Int {
-            return (cardButtons.count+1)/2
-    }
-    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
-    
-    //MARK: - Outlets
-    @IBOutlet private weak var flipCountLable: UILabel!
     @IBOutlet private var cardButtons: [UIButton]!
     
     //MARK: - Actions
@@ -39,8 +30,33 @@ class ViewController: UIViewController {
         }
     }
     
+    //MARK: - Properties
+    private (set) var flipCount = 0 {
+        didSet {
+            updateFlipCountLabel()
+        }
+    }
+    //    private var emojiChoices = ["🎃", "🚂", "🚙", "✈️", "❤️", "💕", "😍", "😘", "💀", "🤖", "👾", "🦾", "🧠", "👁", "👀", "👤"]
+    private var emojiChoices = "🎃🚂🚙✈️❤️💕😍😘💀🤖👾🦾🧠👁👀👤"
+    private var emoji = [Int: String]()
+    var numberOfPairsOfCards: Int {
+        return (cardButtons.count+1)/2
+    }
+    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+    
+    
+    
     //MARK: - LifeCircle
     override func viewDidLoad() {
+    }
+    
+    private func updateFlipCountLabel() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth: 5.0,
+            .strokeColor: #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        flipCountLable.attributedText = attributedString
     }
     
     private func updateViewFromModel​ () {
@@ -59,7 +75,8 @@ class ViewController: UIViewController {
     
     private func emoji(for card: Card) -> String {
         if  emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
+            let randomStringIndex = emojiChoices.index(emojiChoices.startIndex, offsetBy: emojiChoices.count.arc4random)
+            emoji[card.identifier] = String(emojiChoices.remove(at: randomStringIndex))
             //let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             //emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
